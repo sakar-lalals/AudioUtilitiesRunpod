@@ -1,0 +1,5 @@
+runpod==1.6.2
+boto3
+requests==2.31.0
+pydub==0.25.1
+tensorflow>=2.4.1,<2.15.1
