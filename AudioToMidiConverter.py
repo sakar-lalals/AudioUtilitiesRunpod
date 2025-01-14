@@ -179,10 +179,11 @@ class AudioToMidiRunpod():
             save_notes = arguments.get('save_notes', False)
 
             out_obj = self.audioToMidi.run(task_id, audio_path, sonify_midi, save_notes)
+            out_obj['task_id'] = task_id
             return success(out_obj)
         except Exception as e:
             self.logger.exception(e)
-            out_obj = {'task_id' : task_id}
+            out_obj = {'task_id' : task_id, 'error' : str(e)}
             return error(out_obj)
 
 def main():
