@@ -170,5 +170,8 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 
-Dockerfile.AudioToMidiConverter.test
-
+*.test
+*.mp3
+*.wav
+*.flac
+*.webm

@@ -1,0 +1,10 @@
+{
+    "input": {
+        "arguments" : {
+            "audio_path_s3" : "files/846fc2b2-20e4-4e5b-aeb9-307498be0361.wav", 
+            "task_id" : "sakartestinstrumental1", 
+            "mode" : "instrumental_extractor"
+        }
+    },
+    "webhook": "https://sakar.requestcatcher.com/test"
+}
