@@ -14,13 +14,6 @@ REDIS_PASSWORD = os.environ.get("REDIS_PASSWORD", None)
 REDIS_USERNAME = os.environ.get("REDIS_USERNAME", None)
 REDIS_DB = int(os.environ.get("REDIS_DB", 0))
 
-REDIS_HOST = "redis-12798.c9.us-east-1-2.ec2.redns.redis-cloud.com"
-REDIS_PORT = 12798
-REDIS_DB = 0
-REDIS_USERNAME = "default"
-REDIS_PASSWORD = "s8p9cAr0THaMNbDla7OPbXdIzVHGIbqP"
-
-
 
 class RedisHelper:
     def __init__(self):
