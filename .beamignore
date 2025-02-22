@@ -1,0 +1,8 @@
+*.wav
+*.test 
+*.json
+*.webm
+audio_separator_weights/*
+output/*
+.git
+*.pyc

@@ -27,5 +27,5 @@ docker run lalals-audio-downloader-test
 
 # Audio Downloader Runpod 
 docker build --platform "linux/amd64" -f YoutubeDownloader/Dockerfile -t lalals-audio-downloader .
-docker tag lalals-audio-downloader:latest sakarlalals/lalals-audio-downloader:0.2
-docker push sakarlalals/lalals-audio-downloader:0.2
+docker tag lalals-audio-downloader:latest sakarlalals/lalals-audio-downloader:0.4
+docker push sakarlalals/lalals-audio-downloader:0.4

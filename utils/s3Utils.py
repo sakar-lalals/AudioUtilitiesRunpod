@@ -3,6 +3,8 @@ import boto3
 import os
 from .dirUtils import unzip_file
 from .logger import get_logger
+from pydantic import GetCoreSchemaHandler
+from pydantic_core import core_schema
 
 class S3Helper:
     def __init__(self, aws_access_key : str, aws_secret_key : str, aws_region : str) -> None:
@@ -11,6 +13,12 @@ class S3Helper:
                                aws_secret_access_key = aws_secret_key,
                                region_name = aws_region)
         self.logger = get_logger("S3Helper")
+
+    @classmethod
+    def __get_pydantic_core_schema__(
+        cls, source_type: type, handler: GetCoreSchemaHandler
+    ) -> core_schema.CoreSchema:
+        return core_schema.is_instance_schema(cls)
         
     def download_zip_file(self, bucket_name : str, s3_key : str, local_file_path : str, extract_folder : str):
         try:

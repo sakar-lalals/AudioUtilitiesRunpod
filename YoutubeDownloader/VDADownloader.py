@@ -60,7 +60,7 @@ class VDADownloader():
             self.logger.exception(e)
             raise Exception("Error fetching file info")
     
-    def _get_download_url(self, file_id, timeout : int = 45):
+    def _get_download_url(self, file_id, timeout : int = 90):
         """
         Gets the download url from oceansaver conversion
         """
@@ -75,6 +75,8 @@ class VDADownloader():
                     
                     if progress_data.get('success') == 1:
                         download_url = progress_data.get('download_url')
+                        if not download_url:
+                            return None
                         print(f"url {download_url} generation complete downloading now!")
                         return download_url
                     else:

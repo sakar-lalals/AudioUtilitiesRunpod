@@ -7,9 +7,9 @@ import runpod
 from utils.s3Utils import S3Helper
 from utils.response_utils import success, error
 from utils.logger import get_logger
-from AudioSeparator import AudioSeparator
+from utils.AudioSeparator import AudioSeparator
 from pydub import AudioSegment
-from Elevenlabs import SoundEffectCreator
+from utils.Elevenlabs import SoundEffectCreator
 # from audiocraft.models import AudioGen
 # from audiocraft.data.audio import audio_write
 
