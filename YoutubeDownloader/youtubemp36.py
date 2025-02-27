@@ -10,7 +10,6 @@ import requests
 import time
 import uuid
 
-from utils.youtubemp36utils import choose_mp36_header_in_random, extract_video_id
 
 
 class YoutubeMp36():
@@ -18,15 +17,36 @@ class YoutubeMp36():
         try:
             self.logger = get_logger("YoutubeMP36Downloader")
             self.youtube_api = YoutubeAPI()
+            self.redisHelper = RedisHelper()
             self.download_format = "wav"
-            self.headers = None 
+            self.api_key_ytmp36 = None 
             self.wait_time = 1
         except Exception as e:
             self.logger.exception(e)
             raise 
+
+    def _get_api_key_ytmp36(self):
+        return self.redisHelper._get_random_value("ytmp36-api-keys")
+
+    def _get_api_key(self):
+        """
+        Tries up to 5 times to get a valid api key.
+        """
+        for _ in range(5):
+            api_key = self._get_api_key_ytmp36()
+            if api_key != self.api_key_ytmp36:
+                self.api_key_ytmp36 = api_key
+                break
+        if not api_key:
+            raise Exception("Could not find a valid youtube downloader api key")
     
     def _get_header(self):
-        return choose_mp36_header_in_random()
+        self._get_api_key()
+        header = {
+            "x-rapidapi-key": f"{self.api_key_ytmp36}",
+            "x-rapidapi-host": "youtube-mp36.p.rapidapi.com"
+        }
+        return header
 
     def download_audio_file(self, download_url, download_path):
         """
@@ -63,20 +83,23 @@ class YoutubeMp36():
     def run(self, url, max_length = 8):
         try:
             audio_length = self._get_audio_length(url)
+ 
             if audio_length > max_length * 60:
                 raise Exception(f"Audio length {audio_length} exceeds max length {max_length}")
-            video_id = extract_video_id(url)
-            print(video_id)
+            video_id = self.youtube_api.extract_video_id(url)
             if not video_id:
                 raise Exception("Error fetching file info")
             download_link, title = self.get_video_link(video_id)
+
             if not download_link or not title:
                 raise Exception("The file cannot be downloaded")
             
             download_path = f"/tmp/{uuid.uuid4()}.wav"
             success, download_path = self.download_audio_file(download_link, download_path)
             if not success:
+                self.logger.debug(f"Error downloading file : {url}")
                 raise Exception("Error downloading file")
+            self.logger.debug(f"File : {title} sucessfully downloaded")
             return title, download_path, audio_length
         except Exception as e:
             self.logger.exception(e)
