@@ -13,6 +13,7 @@ import uuid
 from YoutubeDownloader.YoutubeAPI import YoutubeAPI
 from YoutubeDownloader.VDADownloader import VDADownloader
 from YoutubeDownloader.YTDLPDownloader import YTDLPDownloader
+from YoutubeDownloader.youtubemp36 import YoutubeMp36
 
 aws_access_key = os.environ.get("aws_access_key")
 aws_secret_key = os.environ.get("aws_secret_key")
@@ -32,6 +33,7 @@ class AudioDownloaderPipeline():
             self.s3Helper = S3Helper(aws_access_key, aws_secret_key, aws_region)
             self.vdaDownloader = VDADownloader()
             self.ytdlpDownloader = YTDLPDownloader()
+            self.youtubemp36 = YoutubeMp36()
         except Exception as e:
             self.logger.exception(e)
             raise 
@@ -85,8 +87,8 @@ class AudioDownloaderPipeline():
         try:
             if validate_youtube_audio_url(url):
                 ## use vdaDownloader for youtube links 
-                self.logger.debug(f"Youtube link detected, using vda...")
-                title, download_path, audio_length = self.vdaDownloader.run(url)
+                self.logger.debug(f"Youtube link detected, using ytmp36...")
+                title, download_path, audio_length = self.youtubemp36.run(url)
             else:
                 self.logger.debug(f"Non youtube link detected, using ytdlp...")
                 ## use ytdlp for other links
